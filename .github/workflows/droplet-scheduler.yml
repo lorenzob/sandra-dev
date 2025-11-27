@@ -2,10 +2,10 @@ name: Droplet Scheduler
 
 on:
   schedule:
-    # Start alle 5:30 UTC (7:30 Italia estate, 6:30 inverno)
-    - cron: '30 5 * * *'
-    # Stop alle 20:00 UTC (22:00 Italia estate, 21:00 inverno)
-    - cron: '0 20 * * *'
+    # Start alle 6:30 UTC (8:30 Italia estate, 7:30 inverno)
+    - cron: '30 6 * * *'
+    # Stop alle 21:00 UTC (23:00 Italia estate, 22:00 inverno)
+    - cron: '0 21 * * *'
   workflow_dispatch:  # Permette esecuzione manuale
 
 jobs:
