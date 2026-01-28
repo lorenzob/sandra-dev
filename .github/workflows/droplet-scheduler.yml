@@ -4,6 +4,7 @@ on:
   schedule:
     # Start alle 6:30 UTC (8:30 Italia estate, 7:30 inverno)
     #- cron: '30 6 * * *'
+    #- cron: '30 15 * * *'
     # Stop alle 21:00 UTC (23:00 Italia estate, 22:00 inverno)
     - cron: '0 21 * * *'
   workflow_dispatch:  # Permette esecuzione manuale
