@@ -28,8 +28,20 @@ jobs:
 
       - name: Start droplet
         if: github.event.inputs.action == 'start'
-        run: doctl compute droplet-action power-on ${{ steps.droplet.outputs.id }} --wait
-
+        run: |
+          STATUS=$(doctl compute droplet get ${{ steps.droplet.outputs.id }} --format Status --no-header)
+          if [ "$STATUS" != "active" ]; then
+            doctl compute droplet-action power-on ${{ steps.droplet.outputs.id }} --wait
+          else
+            echo "Droplet already running, skipping."
+          fi
+          
       - name: Stop droplet
         if: github.event.inputs.action == 'stop'
-        run: doctl compute droplet-action shutdown ${{ steps.droplet.outputs.id }} --wait
+        run: |
+          STATUS=$(doctl compute droplet get ${{ steps.droplet.outputs.id }} --format Status --no-header)
+          if [ "$STATUS" != "off" ]; then
+            doctl compute droplet-action shutdown ${{ steps.droplet.outputs.id }} --wait
+          else
+            echo "Droplet already stopped, skipping."
+          fi
