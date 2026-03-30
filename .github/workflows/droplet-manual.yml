@@ -47,8 +47,8 @@ jobs:
             echo "Droplet already stopped, skipping."
           fi
       
-      - name: Test - Droplet status
-        if: github.event.inputs.action == 'test'
+      - name: Status - Droplet status
+        if: github.event.inputs.action == 'status'
         run: |
           STATUS=$(doctl compute droplet get ${{ steps.droplet.outputs.id }} --format Status --no-header)
           echo "Droplet status: $STATUS"          
