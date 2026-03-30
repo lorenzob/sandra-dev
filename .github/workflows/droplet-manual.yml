@@ -1,0 +1,35 @@
+name: Droplet Scheduler (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'start or stop'
+        required: true
+        type: choice
+        options:
+          - start
+          - stop
+
+jobs:
+  manage-droplet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.RESTART_CRON }}
+
+      - name: Get droplet ID
+        id: droplet
+        run: |
+          DROPLET_ID=$(doctl compute droplet list --format ID,Name --no-header | grep sandra-prod | awk '{print $1}')
+          echo "id=$DROPLET_ID" >> $GITHUB_OUTPUT
+
+      - name: Start droplet
+        if: github.event.inputs.action == 'start'
+        run: doctl compute droplet-action power-on ${{ steps.droplet.outputs.id }} --wait
+
+      - name: Stop droplet
+        if: github.event.inputs.action == 'stop'
+        run: doctl compute droplet-action shutdown ${{ steps.droplet.outputs.id }} --wait
